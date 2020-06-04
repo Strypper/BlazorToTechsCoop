@@ -1,0 +1,61 @@
+@page "/Contact"
+@using Blazorise
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@inject IModalService Modal
+
+<hr/>
+
+<div class="row justify-content-center">
+    <h1>Chat With Us</h1>
+    <Addons>
+        <Addon AddonType="AddonType.Body">
+            <TextEdit @bind-Text="@_messInput" Placeholder="Ask Us Anything" />
+        </Addon>
+        <Addon AddonType="AddonType.End">
+            <Button Color="Color.Secondary" disabled="@(!IsConnected)" @onclick="Send">Send</Button>
+        </Addon>
+    </Addons>
+    <ul>
+        @foreach (var mess in messages)
+        {
+            <li>@mess</li>
+        }
+    </ul>
+</div>
+
+@code{
+    private HubConnection hubConnection;
+    private string _userInput = "";
+    private string _messInput = "";
+    private List<string> messages = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
+            .Build();
+
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        {
+            var encodedMsg = $"{user}: {message}";
+            messages.Add(encodedMsg);
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+        var options = new ModalOptions()
+        {
+            DisableBackgroundCancel = true
+        };
+
+
+        var nameModel = Modal.Show<Modal>("What should we call you ?", options);
+        var name = await nameModel.Result;
+        _userInput = name.Data.ToString();
+    }
+    Task Send() => 
+                hubConnection.SendAsync("SendMess", _userInput, _messInput);
+    public bool IsConnected => 
+                hubConnection.State == HubConnectionState.Connected;
+}

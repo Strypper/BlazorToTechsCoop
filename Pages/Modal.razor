@@ -1,0 +1,20 @@
+@page "/modal"
+@using Blazorise;
+@inject IModalService modal
+        
+    <TextEdit @bind-Text="@Name" Placeholder="Enter Your Name" />
+        
+    <button @onclick="SubmitForm" class="btn btn-primary">Submit</button>
+
+
+@code{
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    bool ShowForm { get; set; } = true;
+    string Name { get; set; }
+
+    void SubmitForm()
+    {
+        BlazoredModal.Close(ModalResult.Ok<string>(Name));
+    }
+}

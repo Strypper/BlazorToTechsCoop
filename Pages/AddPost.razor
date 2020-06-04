@@ -1,0 +1,75 @@
+@page "/addpost"
+@using Blazorise;
+@using ToTechsDotNet.Data;
+@using ToTechsDotNet.Services;
+@inject NavigationManager NavigationManager;
+@inject PostServices PS;
+@inject IFileUpload fileUpload;
+
+<h2 style="text-align: center;">Add Design Post</h2>
+<hr />
+<form>
+    <div class="row justify-content-center">
+        @if(file != null){
+            <img style="width: 100%; height: 20vh;" src="@ImageUrl"/>
+        }
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Title</label>
+                <input form="Name" class="form-control" @bind="@post.Title" />
+            </div>
+            <div class="form-group">
+                <label for="Type" class="control-label"></label>
+                <select @bind="@post.Type" class="form-control">
+                    <option value="">--Select Post Type</option>
+                    <option value="Design">Design</option>
+                    <option value="FrontEnd">FrontEnd</option>
+                    <option value="BackEnd">BackEnd</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Description" class="control-label">Description</label>
+                <input form="Description" class="form-control" @bind="@post.Description" />
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" @onclick="@CreatePost" value="Create"/>
+            <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            <BlazorInputFile.InputFile id="UploadButton" OnChange="UploadFile"/>
+        </div>
+    </div>
+</form>
+
+<Addons>
+    <Addon AddonType="AddonType.Body">
+        <TextEdit Placeholder="Recipient's username" />
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Color="Color.Secondary">Button</Button>
+    </Addon>
+</Addons>
+
+@code {
+    Post post = new Post();
+    string ImageUrl = String.Empty;
+    BlazorInputFile.IFileListEntry file;
+    async Task UploadFile(BlazorInputFile.IFileListEntry[] files){
+        file = files.FirstOrDefault();
+        if(file != null){
+            await fileUpload.UploadAsync(file);
+            post.ImageUrl = "../Upload/" + file.Name;
+            ImageUrl = post.ImageUrl;
+        }
+    }
+    protected async Task CreatePost()
+    {
+        await PS.Create(post);
+        NavigationManager.NavigateTo("Design");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Design");
+    }
+}

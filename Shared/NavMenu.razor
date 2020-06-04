@@ -1,0 +1,77 @@
+﻿@using Blazorise;
+@using Blazorise.Sidebar;
+
+<Sidebar @ref="sidebar">
+    <SidebarContent>
+        <SidebarBrand>
+            <a href="/">ToTechs Coop</a>
+        </SidebarBrand>
+        <SidebarNavigation>
+            <SidebarItem>
+                <SidebarLink To="" Title="Home">
+                    <Icon Name="@("fas fa-home")" Margin="Margin.Is3.FromRight" />Home
+                </SidebarLink>
+            </SidebarItem>
+            <SidebarItem>
+                <SidebarLink Toggled="(isOpen)=> mailSidebarSubItems.Toggle(isOpen)" IsShow="true">
+                    <Icon Name="@("fas fa-microscope")" Margin="Margin.Is3.FromRight" />Research
+                </SidebarLink>
+                <SidebarSubItem @ref="mailSidebarSubItems" IsShow="true">
+                    <SidebarItem>
+                        <SidebarLink To="design">
+                            <Icon Name="@("fas fa-palette")" Margin="Margin.Is3.FromRight" />Design
+                        </SidebarLink>
+                    </SidebarItem>
+                     <SidebarItem>
+                        <SidebarLink To="design">
+                            <Icon Name="@("fas fa-object-group")" Margin="Margin.Is3.FromRight" />Front-End
+                        </SidebarLink>
+                    </SidebarItem>
+                    <SidebarItem>
+                        <SidebarLink To="design">
+                            <Icon Name="@("fab fa-docker")" Margin="Margin.Is3.FromRight" />Back-End
+                        </SidebarLink>
+                    </SidebarItem>
+                    <SidebarItem>
+                        <SidebarLink To="backend">
+                            <Icon Name="@("fas fa-microchip")" Margin="Margin.Is3.FromRight" />HardWare
+                        </SidebarLink>
+                    </SidebarItem>
+                    @* other subitems *@
+                </SidebarSubItem>
+            </SidebarItem>
+            <SidebarItem>
+                <SidebarLink Toggled="(isOpen)=> appsSidebarSubItems.Toggle(isOpen)" IsShow="true">
+                    <Icon Name="IconName.New" Margin="Margin.Is3.FromRight" />Apps
+                </SidebarLink>
+                <SidebarSubItem @ref="appsSidebarSubItems" IsShow="true">
+                    <SidebarItem>
+                        <SidebarLink To="apps/todo">Todo List</SidebarLink>
+                    </SidebarItem>
+                </SidebarSubItem>
+            </SidebarItem>
+            <SidebarItem>
+                <SidebarLink To="Contact" Title="Contact Us">
+                    <Icon Name="@("far fa-comment-alt")" Margin="Margin.Is3.FromRight" />Contact Us
+                </SidebarLink>
+            </SidebarItem>
+            <SidebarFooter>
+                <SidebarLink>
+                    <Icon Name="IconName.Person" Margin="Margin.Is3.FromRight"/>Log-In
+                </SidebarLink>
+            </SidebarFooter>
+        </SidebarNavigation>
+    </SidebarContent>
+</Sidebar>
+
+
+@code {
+    Sidebar sidebar;
+    SidebarSubItem mailSidebarSubItems;
+    SidebarSubItem appsSidebarSubItems;
+
+    void ToggleSidebar()
+    {
+        sidebar.Toggle();
+    }
+}

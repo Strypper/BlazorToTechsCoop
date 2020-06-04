@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+
+<div class="main">
+    <div class="MobileBar">
+    <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Light" ThemeContrast="ThemeContrast.Light">
+        <BarBrand>
+            ToTechsCoop
+        </BarBrand>
+        <BarToggler>
+        </BarToggler>
+        <BarMenu>
+            <BarStart>
+                <BarItem>
+                    <Icon Name="IconName.Dashboard"/> <BarLink To="/">Home</BarLink>
+                </BarItem>
+                <BarItem>
+                    <Icon Name="IconName.Mail"/> <BarLink To="Design">Design</BarLink>
+                </BarItem>
+            </BarStart>
+            <BarEnd>
+                <BarItem>
+                    <Button Color="Color.Primary">Sign up</Button>
+                    <Button Color="Color.Secondary">Log in</Button>
+                </BarItem>
+            </BarEnd>
+        </BarMenu>
+    </Bar></div>
+    <div class="content px-4 body">
+        @Body
+    </div>
+</div>
+
+<div class="sidebar">
+    <NavMenu/>
+</div>
+
+<BlazoredModal/>
+
