@@ -29,4 +29,5 @@
   - RealTime chat using SignalR 
   ![](Demo/SignalR.png)
   - Blazorise NavBar
+
   ![](Demo/BlazoriseNavBar.png)
